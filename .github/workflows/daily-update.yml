@@ -1,0 +1,42 @@
+name: Daily AI ML Update
+
+on:
+  schedule:
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  daily-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update daily log
+        run: |
+          TODAY=$(date -u +"%Y-%m-%d")
+
+          if ! grep -q "## $TODAY" daily-log.md; then
+            echo "" >> daily-log.md
+            echo "## $TODAY" >> daily-log.md
+            echo "" >> daily-log.md
+            echo "- Daily AI/ML progress log updated." >> daily-log.md
+          fi
+
+      - name: Commit and push
+        run: |
+          git config user.name "zawyer"
+          git config user.email "229319938+zawyer@users.noreply.github.com"
+
+          git add daily-log.md
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update daily AI/ML progress"
+            git push
+          fi
