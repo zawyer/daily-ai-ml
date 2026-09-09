@@ -1,27 +1,25 @@
 import numpy as np
 
 # Training data
-X = np.array([1, 2, 3, 4, 5])
-y = np.array([2, 4, 6, 8, 10])
+X_train = np.array([1, 2, 3, 4])
+y_train = np.array([2, 4, 6, 8])
 
-# Calculate slope (m)
-m = np.sum((X - X.mean()) * (y - y.mean())) / np.sum((X - X.mean()) ** 2)
+# Test data
+X_test = np.array([5])
+y_test = np.array([10])
 
-# Calculate intercept (b)
-b = y.mean() - m * X.mean()
+# Learn from training data
+m = np.sum((X_train - X_train.mean()) * (y_train - y_train.mean())) / np.sum((X_train - X_train.mean()) ** 2)
+b = y_train.mean() - m * X_train.mean()
 
-# Predictions
-y_pred = m * X + b
+# Make prediction on test data
+y_pred = m * X_test + b
 
-# Mean Squared Error
-mse = np.mean((y - y_pred) ** 2)
-
-# Predict a new value
-x_new = 6
-prediction = m * x_new + b
+# Calculate MSE
+mse = np.mean((y_test - y_pred) ** 2)
 
 print("Slope:", m)
 print("Intercept:", b)
+print("Actual value:", y_test[0])
+print("Predicted value:", y_pred[0])
 print("MSE:", mse)
-print("Prediction for x =", x_new, ":", prediction)
-
